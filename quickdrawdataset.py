@@ -1,8 +1,14 @@
-from torch.utils.data.dataset import Dataset
+from torch.utils.data import Dataset, DataLoader
+
 import numpy as np
 from PIL import Image
 import os
+class QuickDrawLoader(DataLoader):
+    def validation(self):
+        self.dataset.validation()
 
+    def training(self):
+        self.dataset.train()
 
 class QuickDrawDataset(Dataset):
     splits = ('train', 'train+unlabeled', 'unlabeled', 'test')
@@ -39,8 +45,10 @@ class QuickDrawDataset(Dataset):
             self.data, self.labels = self.__loadfile(
                 self.test_list[0][0], self.test_list[1][0])
 
-        self.mean = np.mean(self.data) / 255
-        self.stdv = np.std(self.data) / 255
+        self.mean = np.mean(self.data)
+        self.stdv = np.std(self.data)
+
+        self.transforms_type = 'train'
 
     def __getitem__(self, index):
         """
@@ -57,10 +65,9 @@ class QuickDrawDataset(Dataset):
 
             # doing this so that it is consistent with all other datasets
         # to return a PIL Image
-        img = Image.fromarray(img / 255)
 
         if self.transform is not None:
-            img = self.transform(img)
+            img = self.transform[self.transforms_type](np.transpose(img, (1,2,0)))
 
         if self.target_transform is not None:
             target = self.target_transform(target)
@@ -83,6 +90,12 @@ class QuickDrawDataset(Dataset):
         path_to_data = os.path.join(self.root, data_file)
         # read whole file in uint8 chunks
         everything = np.load(path_to_data, encoding='latin1')
-        images = np.array([t[1].reshape(100, 100) for t in everything]).astype('uint8')
+        images = np.array([t[1].reshape(1, 100, 100) for t in everything]).astype('uint8')
 
         return images, labels
+
+    def validation(self):
+        self.transforms_type = 'valid'
+
+    def train(self):
+        self.transforms_type = 'train'
