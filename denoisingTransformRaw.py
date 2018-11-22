@@ -25,7 +25,7 @@ def remove_noise(imgs):
         mask = np.zeros((h + 2, w + 2), np.uint8)
 
         # Floodfill from point (0, 0)
-        cv2.floodFill(im_floodfill, mask, (0, 0), 255);
+        cv2.floodFill(im_floodfill, mask, (1, 1), 255)
 
         # Invert floodfilled image
         im_floodfill_inv = cv2.bitwise_not(im_floodfill)
@@ -63,6 +63,9 @@ def remove_noise(imgs):
         im_tuple[1] = im_denoised
 
 remove_noise(train_images)
+
+plt.imshow(train_images[127][1])
+plt.show()
 
 np.save("./data/train_images_denoised.npy", train_images)
 
