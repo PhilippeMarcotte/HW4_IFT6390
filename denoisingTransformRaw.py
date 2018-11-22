@@ -3,6 +3,8 @@ from scipy.ndimage.measurements import label
 import numpy as np
 import matplotlib.pyplot as plt
 from tqdm import tqdm
+from scipy.ndimage.morphology import generate_binary_structure
+import numpy as np
 
 train_images = np.load("./data/train_images.npy", encoding='latin1')
 test_images = np.load("./data/test_images.npy", encoding='latin1')
@@ -55,7 +57,10 @@ def remove_noise(imgs):
             for i, j in (indices[labeled == labelToDelete]):
                 im_out[i, j] = 0
 
-        im_tuple[1] = im_out
+        im_denoised = np.zeros(im_out.shape)
+        im_denoised[(im_out == im_bw) & (im_out == 255)] = 255
+
+        im_tuple[1] = im_denoised
 
 remove_noise(train_images)
 
