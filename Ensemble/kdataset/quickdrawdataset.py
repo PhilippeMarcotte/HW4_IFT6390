@@ -6,23 +6,25 @@ import os
 class TestQuickDrawLoader(DataLoader):
     def __iter__(self):
         self.dataset.testing()
-        print(self.dataset.transforms_type)
+        print(self.dataset.transforms_type, "transforms")
         return super(TestQuickDrawLoader, self).__iter__()
 
 class ValidationQuickDrawLoader(DataLoader):
     def __iter__(self):
         self.dataset.validation()
-        print(self.dataset.transforms_type)
+        print(self.dataset.transforms_type, "transforms")
         return super(ValidationQuickDrawLoader, self).__iter__()
 
 class TrainingQuickDrawLoader(DataLoader):
     def __iter__(self):
         self.dataset.training()
-        print(self.dataset.transforms_type)
+        print(self.dataset.transforms_type, "transforms")
         return super(TrainingQuickDrawLoader, self).__iter__()
 
 class QuickDrawDataset(Dataset):
     splits = ('train', 'test')
+    train_imgs_name = "train_images.npy"
+    test_imgs_name = "test_images.npy"
 
     def __init__(self, root, split='train', transform=None, target_transform=None):
         if split not in self.splits:
@@ -42,9 +44,9 @@ class QuickDrawDataset(Dataset):
 
         # now load the picked numpy arrays
         if self.split == 'train':
-            self.data, self.labels = self.__loadfile__("train_images.npy", "train_labels.csv")
+            self.data, self.labels = self.__loadfile__(self.train_imgs_name, "train_labels.csv")
         else:  # self.split == 'test':
-            self.data, self.labels = self.__loadfile__("test_images.npy")
+            self.data, self.labels = self.__loadfile__(self.test_imgs_name)
 
         self.training()
 
@@ -99,3 +101,7 @@ class QuickDrawDataset(Dataset):
 
     def training(self):
         self.transforms_type = 'train'
+
+class DenoisedQuickDrawDataset(QuickDrawDataset):
+    train_imgs_name = "train_images_denoised.npy"
+    test_imgs_name = "test_images_denoised.npy"
