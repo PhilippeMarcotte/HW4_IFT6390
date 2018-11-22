@@ -3,6 +3,7 @@ from skimage import util
 from skimage.morphology import erosion
 from scipy.ndimage.measurements import label
 from scipy.ndimage.morphology import generate_binary_structure
+import numpy as np
 
 # Note there is no transform!
 # dataset = QuickDrawDataset('./gdrive/My Drive/MAITRISE/Assignments/HW4/',split='train', transform=None, target_transform=None)
@@ -61,3 +62,8 @@ for elem in range(ncomponents - n):
 # return im_out (numpy array)
 plt.imshow(im_out)
 plt.imshow()
+
+# NEW : Return unfilled object
+
+im_denoised = np.zeros(im_out.shape)
+im_denoised[(im_out == im_bw) & (im_out == 255)] = 255
