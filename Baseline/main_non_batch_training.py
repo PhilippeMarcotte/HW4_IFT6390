@@ -2,11 +2,12 @@ import numpy as np
 
 from quickdrawdataset import QuickDrawDataset
 from Baseline.svm_project import SVMC
+from Baseline.SVM import SVM
 import torch
 
 data_path = "../data"
 validationRatio = 0.1
-batch_size = 100
+batch_size = 10000
 
 dataset = QuickDrawDataset(data_path, split='train')
 
@@ -39,13 +40,16 @@ for it, (x, y) in enumerate(v_loader):
     if it == 0:
         valX = x.numpy().reshape(x.shape[0], -1)
         valY = y.numpy()
-    else:
-        valX = np.append(valX, x.numpy().reshape(x.shape[0], -1), axis=0)
-        valY = np.append(valY, y.numpy(), axis=0)
 
-
-svc = SVMC(10, 'rbf')
-
+#SVC
+"""svc = SVMC(10, 'rbf')
 svc.train(trainX, trainY)
 
-print(svc.score(valX, valY))
+print("SVC with RBF, C = 10", svc.score(valX, valY))"""
+
+#SGD SVM
+
+svm = SVM(False)
+svm.train(trainX, trainY, 10)
+
+print("SGD SVM no RBF 10 epochs no batch", svm.score(valX, valY))

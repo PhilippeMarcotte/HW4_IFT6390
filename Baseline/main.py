@@ -20,8 +20,12 @@ t_loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, sampler=t
 
 v_loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, sampler=valid_sampler,)
 
-svm = SVM()
+#svm = SVM(True)
+#svm.batch_train(t_loader, 10)
 
-svm.train(t_loader, 10)
+#print("with RBF, 10 epochs", svm.batch_score(v_loader))
 
-print(svm.batch_score(v_loader))
+svm = SVM(False)
+svm.batch_train(t_loader, 50)
+
+print("No RBF, 10 epochs", svm.batch_score(v_loader))
