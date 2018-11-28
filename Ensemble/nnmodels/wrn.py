@@ -70,7 +70,7 @@ class WideResNet(nn.Module):
         # global average pooling and classifier
         self.bn1 = nn.BatchNorm2d(nChannels[3])
         self.relu = nn.ReLU(inplace=True)
-        self.fc = nn.Linear(4096, self.num_classes)
+        self.fc = nn.Linear(9216, self.num_classes)
         self.nChannels = nChannels[3]
         self.sig = nn.Sigmoid()
         for m in self.modules():

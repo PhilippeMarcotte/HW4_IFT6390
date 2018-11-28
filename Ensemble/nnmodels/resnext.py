@@ -75,7 +75,7 @@ class GenericResNeXt(nn.Module):
         self.stage_2 = self._make_layer(block, 128, layer_blocks, 2)
         self.stage_3 = self._make_layer(block, 256, layer_blocks, 2)
         self.avgpool = nn.AvgPool2d(8)
-        self.classifier = nn.Linear(1024, num_classes)
+        self.classifier = nn.Linear(9216, num_classes)
 
         for m in self.modules():
             if isinstance(m, nn.Conv2d):

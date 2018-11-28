@@ -3,22 +3,26 @@ from torch.utils.data import Dataset, DataLoader
 import numpy as np
 from PIL import Image
 import os
+
+classes = np.array(['sink', 'pear', 'moustache', 'nose', 'skateboard', 'penguin', 'peanut', 'skull', 'panda',
+                        'paintbrush', 'nail', 'apple', 'rifle', 'mug', 'sailboat', 'pineapple',
+                        'spoon', 'rabbit', 'shovel', 'rollerskates', 'screwdriver', 'scorpion', 'rhinoceros', 'pool',
+                        'octagon', 'pillow', 'parrot', 'squiggle', 'mouth', 'empty', 'pencil'])
+labels_to_index = {k: v for v, k in enumerate(classes)}
+
 class TestQuickDrawLoader(DataLoader):
     def __iter__(self):
         self.dataset.testing()
-        print(self.dataset.transforms_type, "transforms")
         return super(TestQuickDrawLoader, self).__iter__()
 
 class ValidationQuickDrawLoader(DataLoader):
     def __iter__(self):
         self.dataset.validation()
-        print(self.dataset.transforms_type, "transforms")
         return super(ValidationQuickDrawLoader, self).__iter__()
 
 class TrainingQuickDrawLoader(DataLoader):
     def __iter__(self):
         self.dataset.training()
-        print(self.dataset.transforms_type, "transforms")
         return super(TrainingQuickDrawLoader, self).__iter__()
 
 class QuickDrawDataset(Dataset):
@@ -35,11 +39,6 @@ class QuickDrawDataset(Dataset):
         self.transform = transform
         self.target_transform = target_transform
         self.split = split  # train/test/unlabeled set
-        self.classes = np.array(['sink', 'pear', 'moustache', 'nose', 'skateboard', 'penguin', 'peanut', 'skull', 'panda',
-                        'paintbrush', 'nail', 'apple', 'rifle', 'mug', 'sailboat', 'pineapple',
-                        'spoon', 'rabbit', 'shovel', 'rollerskates', 'screwdriver', 'scorpion', 'rhinoceros', 'pool',
-                        'octagon', 'pillow', 'parrot', 'squiggle', 'mouth', 'empty', 'pencil'])
-        self.labels_to_index = {k: v for v, k in enumerate(self.classes)}
 
 
         # now load the picked numpy arrays
@@ -84,7 +83,7 @@ class QuickDrawDataset(Dataset):
                 self.root, labels_file)
             with open(path_to_labels, 'rb') as f:
                 labels = np.loadtxt(f, delimiter=",", skiprows=1, dtype=str)[:, 1]
-                labels = [self.labels_to_index[label] for label in labels]
+                labels = [labels_to_index[label] for label in labels]
 
         path_to_data = os.path.join(self.root, data_file)
         # read whole file in uint8 chunks

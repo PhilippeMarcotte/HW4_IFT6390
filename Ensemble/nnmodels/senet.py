@@ -153,11 +153,11 @@ class SELayer(nn.Module):
         return x * y
 
 
-class IceSEBasicBlock(nn.Module):
+class SEBasicBlock(nn.Module):
     expansion = 1
 
     def __init__(self, inplanes, planes, reduction=REDUCTION):
-        super(IceSEBasicBlock, self).__init__()
+        super(SEBasicBlock, self).__init__()
         self.conv1 = conv3x3(inplanes, planes)
         self.bn1 = nn.BatchNorm2d(planes)
         self.relu = nn.ReLU(inplace=True)
@@ -185,9 +185,9 @@ class IceSEBasicBlock(nn.Module):
         return out
 
 
-class IceResNet(nn.Module):
+class SEResNet(nn.Module):
     def __init__(self, block, n_size=1, num_classes=1, num_rgb=2, base=32):
-        super(IceResNet, self).__init__()
+        super(SEResNet, self).__init__()
         self.base = base
         self.num_classes = num_classes
         self.inplane = self.base  # 45 epochs
@@ -201,7 +201,7 @@ class IceResNet(nn.Module):
         self.avgpool = nn.AdaptiveAvgPool2d(1)
 
         self.fc = nn.Linear(int(8 * self.base), num_classes)
-        nn.init.kaiming_normal(self.fc.weight)
+        nn.init.kaiming_normal_(self.fc.weight)
         self.sig = nn.Sigmoid()
 
         for m in self.modules():
@@ -242,32 +242,32 @@ class IceResNet(nn.Module):
 
 
 def senet16_RGB_10_classes(num_classes=10, num_rgb=3):
-    model = IceResNet(IceSEBasicBlock, 1, num_classes, num_rgb, 16)  # 56
+    model = SEResNet(SEBasicBlock, 1, num_classes, num_rgb, 16)  # 56
     return model
 
 
 def senet16_RG_1_classes(num_classes=1, num_rgb=2):
-    model = IceResNet(IceSEBasicBlock, 1, num_classes, num_rgb, 16)  # 56
+    model = SEResNet(SEBasicBlock, 1, num_classes, num_rgb, 16)  # 56
     return model
 
 
 def senet32_RG_1_classes(num_classes=1, num_rgb=2):
-    model = IceResNet(IceSEBasicBlock, 1, num_classes, num_rgb, 32)  # 56
+    model = SEResNet(SEBasicBlock, 1, num_classes, num_rgb, 32)  # 56
     return model
 
 def senet32_RGB_1_classes(num_classes=1, num_rgb=3):
-    model = IceResNet(IceSEBasicBlock, 1, num_classes, num_rgb, 32)  # 56
+    model = SEResNet(SEBasicBlock, 1, num_classes, num_rgb, 32)  # 56
     return model
 
 def senet64_RG_1_classes(num_classes=1, num_rgb=2):
-    model = IceResNet(IceSEBasicBlock, 1, num_classes, num_rgb, 64)  # 56
+    model = SEResNet(SEBasicBlock, 1, num_classes, num_rgb, 64)  # 56
     return model
 
 
 def senet128_RG_1_classes(num_classes=1, num_rgb=2):
-    model = IceResNet(IceSEBasicBlock, 1, num_classes, num_rgb, 128)  # 56
+    model = SEResNet(SEBasicBlock, 1, num_classes, num_rgb, 128)  # 56
     return model
 
 def senetXX_generic(num_classes, num_rgb, base):
-    model = IceResNet(IceSEBasicBlock, 1, num_classes, num_rgb, base)  # 56
+    model = SEResNet(SEBasicBlock, 1, num_classes, num_rgb, base)  # 56
     return model

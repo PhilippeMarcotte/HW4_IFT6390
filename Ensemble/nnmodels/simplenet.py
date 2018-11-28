@@ -76,7 +76,7 @@ class ConvCNN(nn.Module):
 
 
 class SimpleNet(nn.Module):
-    def __init__(self,num_classes, n_dim):
+    def __init__(self,num_classes, n_dim, linear_size):
         super(SimpleNet, self).__init__()
         self.num_classes=num_classes
         self.avgpool = nn.AdaptiveAvgPool2d(1)
@@ -95,7 +95,7 @@ class SimpleNet(nn.Module):
         )
 
         self.classifier = torch.nn.Sequential(
-            nn.Linear(1024, (num_classes)),
+            nn.Linear(linear_size, (num_classes)),
         )
 
         self.sig=nn.Sigmoid()
@@ -112,7 +112,7 @@ class SimpleNet(nn.Module):
     #         return F.log_softmax(x)
 
 
-def simpleXX_generic(num_classes, imgDim):
+def simpleXX_generic(num_classes, imgDim, linear_size):
     # depth, num_classes = 1, widen_factor = 1, dropRate = 0.0
-    model = SimpleNet(num_classes=num_classes, n_dim=imgDim)  # 56
+    model = SimpleNet(num_classes=num_classes, n_dim=imgDim, linear_size=linear_size)  # 56
     return model

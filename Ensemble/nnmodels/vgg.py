@@ -12,12 +12,12 @@ cfg = {
 
 
 class VGG(nn.Module):
-    def __init__(self, vgg_name, num_classes, num_rgb):
+    def __init__(self, vgg_name, num_classes, num_rgb, linear_size):
         super(VGG, self).__init__()
         self.features = self._make_layers(cfg[vgg_name], num_rgb)
         self.num_classes=num_classes
 
-        self.classifier = nn.Linear(2048, num_classes)
+        self.classifier = nn.Linear(linear_size, num_classes)
 
         self.sig = nn.Sigmoid()
 
@@ -49,6 +49,6 @@ class VGG(nn.Module):
 # x = torch.randn(2,3,32,32)
 # print(net(Variable(x)).size())
 
-def vggnetXX_generic(num_classes, num_rgb,type='VGG16'):
-    model = VGG(type, num_classes, num_rgb)  # 56
+def vggnetXX_generic(num_classes, num_rgb, linear_size=4608, type='VGG16'):
+    model = VGG(type, num_classes, num_rgb, linear_size)  # 56
     return model
