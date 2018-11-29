@@ -1,5 +1,5 @@
-from quickdrawdataset import QuickDrawDataset
-from Baseline.SVM import SVM
+from Ensemble.quickdrawdataset import QuickDrawDataset
+from Baseline.SGD_SVM import SGD_SVM
 import torch
 
 data_path = "../data"
@@ -20,12 +20,8 @@ t_loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, sampler=t
 
 v_loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, sampler=valid_sampler,)
 
-#svm = SVM(True)
-#svm.batch_train(t_loader, 10)
 
-#print("with RBF, 10 epochs", svm.batch_score(v_loader))
-
-svm = SVM(False)
+svm = SGD_SVM(False)
 svm.batch_train(t_loader, 50)
 
 print("No RBF, 10 epochs", svm.batch_score(v_loader))

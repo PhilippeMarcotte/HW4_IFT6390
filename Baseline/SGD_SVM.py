@@ -1,10 +1,9 @@
 import numpy as np
 from sklearn.linear_model import SGDClassifier
 from sklearn.kernel_approximation import RBFSampler
-from sklearn.model_selection import GridSearchCV
 
 
-class SVM:
+class SGD_SVM:
 
     def __init__(self, useRBFKernel):
         self.rbf_feature = RBFSampler(gamma=1, random_state=1)
@@ -22,6 +21,8 @@ class SVM:
                 y = y.numpy()
 
                 x = x.reshape(x.shape[0], -1) #flatten the data points
+
+                x = x / 255
 
                 if self.useRBFKernel:
                     x = self.rbf_feature.fit_transform(x)
@@ -62,8 +63,9 @@ class SVM:
             x = x.numpy()
             y = y.numpy()
 
-
             x = x.reshape(x.shape[0], -1) #flatten the data points
+
+            x = x / 255
 
             if self.useRBFKernel:
                 x = self.rbf_feature.fit_transform(x)

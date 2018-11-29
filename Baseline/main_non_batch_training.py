@@ -1,8 +1,8 @@
 import numpy as np
 
-from quickdrawdataset import QuickDrawDataset
-from Baseline.svm_project import SVMC
-from Baseline.SVM import SVM
+from Ensemble.quickdrawdataset import QuickDrawDataset
+from Baseline.SVMC import SVMC
+from Baseline.SGD_SVM import SGD_SVM
 import torch
 
 data_path = "../data"
@@ -41,15 +41,19 @@ for it, (x, y) in enumerate(v_loader):
         valX = x.numpy().reshape(x.shape[0], -1)
         valY = y.numpy()
 
+trainX = trainX / 255
+valX = valX / 255
+
+
 #SVC
-"""svc = SVMC(10, 'rbf')
+svc = SVMC(100, 'linear')
 svc.train(trainX, trainY)
 
-print("SVC with RBF, C = 10", svc.score(valX, valY))"""
+print("SVC without kernel, C = 100", svc.score(valX, valY))
 
 #SGD SVM
 
-svm = SVM(False)
+svm = SGD_SVM(False)
 svm.train(trainX, trainY, 10)
 
-print("SGD SVM no RBF 10 epochs no batch", svm.score(valX, valY))
+print("SGD SVM no RBF 10 epochs no mini batch", svm.score(valX, valY))
