@@ -10,7 +10,7 @@ class SVMC:
     def train(self, x, y):
         self.classifier.fit(x, y)
 
-    def predict(self, x):
+    def predict(self, x, file):
         return self.classifier.predict(x)
 
     def score(self, x, y):

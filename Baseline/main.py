@@ -1,4 +1,7 @@
-from Ensemble.quickdrawdataset import QuickDrawDataset
+import numpy as np
+
+from Baseline.Utils import savePredictionsToFile
+from Ensemble.quickdrawdataset import QuickDrawDataset, classes
 from Baseline.SGD_SVM import SGD_SVM
 import torch
 
@@ -22,6 +25,25 @@ v_loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, sampler=v
 
 
 svm = SGD_SVM(False)
-svm.batch_train(t_loader, 50)
+svm.batch_train(t_loader, 1)
 
 print("No RBF, 10 epochs", svm.batch_score(v_loader))
+
+##################TEST######################
+test_dataset = QuickDrawDataset(data_path, split='test')
+test_indices = torch.randperm(len(dataset))
+test_sampler = torch.utils.data.sampler.SubsetRandomSampler(valid_indices)
+t_loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, sampler=test_sampler)
+
+testX = 0
+for it, (x, y) in enumerate(v_loader):
+    if it == 0:
+        testX = x.numpy().reshape(x.shape[0], -1)
+    else:
+        testX = np.append(testX, x.numpy().reshape(x.shape[0], -1), axis=0)
+
+testX = testX / 255
+
+testY = svm.predict(testX)
+
+savePredictionsToFile("svm_Test.csv", testY, classes)
