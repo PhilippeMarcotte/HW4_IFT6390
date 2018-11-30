@@ -47,8 +47,6 @@ class QuickDrawDataset(Dataset):
         else:  # self.split == 'test':
             self.data, self.labels = self.__loadfile__(self.test_imgs_name)
 
-        self.training()
-
     def __getitem__(self, index):
         """
         Args:

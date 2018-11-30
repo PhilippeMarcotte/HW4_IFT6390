@@ -2,12 +2,20 @@
 Les données d'entraînement et de test devraient être placées dans un dossier data à la racine du projet.
 
 ## CNNs Ensemble
-### Entraîner les CNNs
-Dans le dossier CNNs, un fichier nommé models.config contient les spécifications des modèles que nous voulons entraîner.
+### Requis
+Installer la librairie pretrainedmodels. Nous n'utilisons pas de modèles préentrainés mais celle-ci contient l'implémentation pytorch de SENet-154.
 
+```sh
+pip install pretrainedmodels
+```
+
+### models.config
+Dans le dossier CNNsEnsemble, un fichier nommé models.config contient les spécifications des modèles que nous voulons entraîner ou utiliser pour faire une prédiction.
+
+### Entraîner les CNNs
 Pour exécuter l'entraînement
 ```sh
-python CNNs/training.py
+python CNNsEnsemble/training.py
 ```
 
 ### Faire une prédiction
@@ -15,16 +23,10 @@ Les modèles se retrouvant dans models.config vont être utilisés pour faire un
 
 Pour produire un fichier csv contenant les prédictions
 ```sh
-python CNNs/predict.py
+python CNNsEnsemble/predict.py
 ```
 
-Le fichier résultant devrait se situer dans le dossier dans le dossier suivant:
-
-.
-+-- CNNsEnsemble
-|   +-- log
-|       +-- quickdraw
-|           +-- predictions.csv
+Le fichier résultant devrait se situer dans le dossier ./CNNsEnsemble/log/quickdraw/predictions.csv
 
 ## Baseline SVM
 
