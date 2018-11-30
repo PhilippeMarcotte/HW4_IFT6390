@@ -187,7 +187,6 @@ if __name__ == '__main__':
                 n_bad_epoch += 1
 
             if n_bad_epoch >= model_config.getint("bad_epoch_threshold"):
-                # tqdm.write(model_config.get("bad_epoch_threshold"), "epochs since last best validation. Stopping.")
                 break
 
         metrics_path = os.path.join(pre, "metrics.csv")

@@ -1,7 +1,7 @@
 import glob
 from utils import predictions_to_csv
 from nnmodels import *
-from models import create_model, create_pretrained_model
+from models import create_model
 from configparser import ConfigParser
 import ntpath
 from datetime import datetime
@@ -52,17 +52,20 @@ if __name__ == '__main__':
     config.read('models.config')
 
     submissions = glob.glob("./log/quickdraw/*_*.csv")
-    accuracies = [float(submission[submission.rfind("_") + 1:submission.rfind(".")]) for submission in submissions]
+    accuracies = []
+    for submission in submissions:
+        try:
+            accuracies.append(float(submission[submission.rfind("_") + 1:submission.rfind(".")]))
+        except ValueError:
+            continue
+
     best_submission_pth = submissions[np.argmax(accuracies)]
     best_submission = np.loadtxt(best_submission_pth, delimiter=',', skiprows=1, dtype=str)
     best_submission = best_submission[:,1]
 
     for i, model_name in enumerate(config.sections()):
         model_config = config[model_name]
-        if model_config.getboolean("pretrained"):
-            model = create_pretrained_model(model_config)
-        else:
-            model = create_model(model_config)
+        model = create_model(model_config)
         print("Predicting with", model_config.name, "({}/{})".format(i+1, len(config.sections())))
         checkpoints_folder = os.path.join(model_config.get("save_path"), "quickdraw", model_config.name)
         load_most_recent_best_model(model, checkpoints_folder)
