@@ -96,10 +96,10 @@ def loadDB(model_config, transformations):
 
     # Data loaders
     t_loader = TrainingQuickDrawLoader(dataset, batch_size=model_config.getint("batch_size"), sampler=train_sampler,
-                                               pin_memory=(torch.cuda.is_available()), num_workers=4)
+                                               pin_memory=(torch.cuda.is_available()), num_workers=0)
 
     v_loader = ValidationQuickDrawLoader(dataset, batch_size=model_config.getint("batch_size"), sampler=valid_sampler,
-                                                   pin_memory=(torch.cuda.is_available()), num_workers=4)
+                                                   pin_memory=(torch.cuda.is_available()), num_workers=0)
 
     tqdm.write("Training size: {}\tValidation size: {}".format(len(train_indices), len(valid_indices)))
     tqdm.write('#Classes: {}'.format(len(classes)))
