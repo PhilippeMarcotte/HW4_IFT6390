@@ -56,6 +56,9 @@ for it, (x, y) in enumerate(v_loader):
     if it == 0:
         valX = x.numpy().reshape(x.shape[0], -1)
         valY = y.numpy()
+    else:
+        valX = np.append(valX, x.numpy().reshape(x.shape[0], -1), axis=0)
+        valY = np.append(valY, y.numpy(), axis=0)
 
 trainX = trainX / 255
 valX = valX / 255
