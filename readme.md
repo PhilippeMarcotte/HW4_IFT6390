@@ -24,5 +24,27 @@ python predict.py
 Le fichier résultant devrait se situer dans le dossier ./CNNsEnsemble/log/quickdraw/predictions.csv
 
 ## Baseline SVM
+#### models.config
+Dans le dossier Baseline, un fichier nommé models.config contient les spécifications des modèles que nous voulons entraîner ou utiliser pour faire une prédiction.
 
+#### Entraînements et prédictions.
 
+L'entraînement et les prédictions sont effectuer en une seule exécution. Executer les scripts pour le SVM est simple:
+
+Pour executer un training SVM qui utilise "Stochastich Gradient Descent" et mini batching:
+```sh
+cd Baseline
+python main_SGDSVM_minibatch.py
+```
+
+Pour executer un training SVM qui utilise "Stochastich Gradient Descent" et aucun mini batching:
+```sh
+cd Baseline
+python main_SGDSVM_no_minibatch.py
+```
+
+Pour executer un training SVM supporté par C et aucun mini batching:
+```sh
+cd Baseline
+python main_SVM_C.py
+```
